@@ -16,7 +16,7 @@ const editorSchema = z.object({
   summary: upsertPostSchema.shape.summary,
   content: upsertPostSchema.shape.content,
   coverImage: upsertPostSchema.shape.coverImage,
-  published: z.boolean().default(false),
+  published: z.boolean(),
   tagsInput: z.string().optional(),
 });
 

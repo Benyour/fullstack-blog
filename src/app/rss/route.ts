@@ -14,6 +14,7 @@ export async function GET() {
     language: "zh-CN",
     favicon: `${baseUrl}/favicon.ico`,
     generator: "feed",
+    copyright: `© ${new Date().getFullYear()} 张亚斌`,
   });
 
   const posts = await prisma.post.findMany({

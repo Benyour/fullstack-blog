@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import type { Prisma } from "@prisma/client";
+
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { upsertPostSchema } from "@/lib/validators/post";
 
-function postWhere(postId: string) {
+function postWhere(postId: string): Prisma.PostWhereInput {
   return {
     OR: [{ id: postId }, { slug: postId }],
-  } as const;
+  };
 }
 
 export async function GET(
