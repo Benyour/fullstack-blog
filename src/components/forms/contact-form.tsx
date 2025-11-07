@@ -41,17 +41,14 @@ export function ContactForm() {
   });
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-    >
+    <form onSubmit={onSubmit} className="grid gap-5">
       <div className="grid gap-2">
-        <label htmlFor="name" className="text-sm font-medium text-slate-700 dark:text-slate-200">
+        <label htmlFor="name" className="text-sm font-semibold text-[var(--text-secondary)]">
           称呼
         </label>
         <input
           id="name"
-          className="rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950"
+          className="input-field"
           {...register("name")}
           placeholder="例如：张亚斌"
         />
@@ -61,13 +58,13 @@ export function ContactForm() {
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-200">
+        <label htmlFor="email" className="text-sm font-semibold text-[var(--text-secondary)]">
           邮箱
         </label>
         <input
           id="email"
           type="email"
-          className="rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950"
+          className="input-field"
           {...register("email")}
           placeholder="you@example.com"
         />
@@ -77,13 +74,13 @@ export function ContactForm() {
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="message" className="text-sm font-medium text-slate-700 dark:text-slate-200">
+        <label htmlFor="message" className="text-sm font-semibold text-[var(--text-secondary)]">
           留言
         </label>
         <textarea
           id="message"
           rows={4}
-          className="rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950"
+          className="input-field resize-none py-3"
           {...register("message")}
           placeholder="告诉我你的项目或想法，我们一起聊聊。"
         />
@@ -92,11 +89,7 @@ export function ContactForm() {
         )}
       </div>
 
-      <button
-        type="submit"
-        disabled={state === "loading"}
-        className="inline-flex items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-60"
-      >
+      <button type="submit" disabled={state === "loading"} className="btn-accent inline-flex items-center justify-center px-5 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60">
         {state === "loading" ? "发送中..." : "发送"}
       </button>
 

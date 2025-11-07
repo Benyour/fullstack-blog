@@ -61,9 +61,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <article className="py-16">
-      <Container className="max-w-3xl">
+      <Container className="max-w-3xl text-[var(--text-secondary)]">
         <header>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--text-secondary)] opacity-80">
             <time dateTime={post.publishedAt?.toISOString()}>
               {post.publishedAt
                 ? format(post.publishedAt, "yyyy年MM月dd日", { locale: zhCN })
@@ -72,23 +72,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <span>·</span>
             <span>{post.author?.name ?? "匿名作者"}</span>
           </div>
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-[var(--text-primary)]">
             {post.title}
           </h1>
-          <p className="mt-4 text-base text-slate-600 dark:text-slate-300">{post.summary}</p>
-          <div className="mt-6 flex flex-wrap gap-2 text-xs">
+          <p className="mt-4 text-base text-[var(--text-secondary)]">{post.summary}</p>
+          <div className="mt-6 flex flex-wrap gap-2 text-xs text-[var(--text-secondary)]">
             {post.tags.map(({ tag }) => (
-              <span
-                key={tag.id}
-                className="rounded-full border border-slate-300 px-3 py-1 text-slate-600 dark:border-slate-700 dark:text-slate-200"
-              >
+              <span key={tag.id} className="chip">
                 #{tag.name}
               </span>
             ))}
           </div>
         </header>
 
-        <div className="prose prose-slate mt-12 max-w-none dark:prose-invert">
+        <div className="prose prose-theme mt-12 max-w-none">
           {content}
         </div>
       </Container>

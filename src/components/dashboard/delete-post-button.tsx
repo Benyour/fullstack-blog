@@ -29,7 +29,7 @@ export function DeletePostButton({ id }: { id: string }) {
       type="button"
       onClick={handleDelete}
       disabled={pending}
-      className="rounded-full border border-red-200 px-3 py-1 text-xs font-medium text-red-600 transition hover:border-red-300 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-full border border-rose-200/60 bg-rose-500/10 px-3 py-1 text-xs font-medium text-rose-500 transition hover:border-rose-300 hover:bg-rose-500/20 hover:text-rose-300 disabled:cursor-not-allowed disabled:opacity-60"
     >
       删除
     </button>

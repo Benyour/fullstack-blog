@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { PageTransition } from "@/components/layout/page-transition";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AuthProvider } from "@/components/providers/session-provider";
 import { getAuthSession } from "@/lib/auth";
 
@@ -54,16 +56,18 @@ export default async function RootLayout({
 
   return (
     <html lang="zh-CN">
-      <body className={`${geistSans.variable} ${geistMono.variable} bg-background antialiased`}>
-        <AuthProvider session={session}>
-          <div className="flex min-h-screen flex-col">
-            <SiteHeader session={session} />
-            <main className="flex-1 bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-              {children}
-            </main>
-            <SiteFooter />
-          </div>
-        </AuthProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} theme-minimal antialiased`}>
+        <ThemeProvider>
+          <AuthProvider session={session}>
+            <div className="flex min-h-screen flex-col">
+              <SiteHeader session={session} />
+              <main className="flex-1 overflow-x-hidden">
+                <PageTransition>{children}</PageTransition>
+              </main>
+              <SiteFooter />
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

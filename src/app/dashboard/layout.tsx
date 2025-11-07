@@ -26,9 +26,9 @@ export default async function DashboardLayout({
 
   return (
     <div className="py-12">
-      <Container className="grid gap-10 md:grid-cols-[220px,1fr]">
-        <aside className="rounded-2xl border border-slate-200 bg-white p-6 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+      <Container className="grid gap-10 md:grid-cols-[230px,1fr]">
+        <aside className="panel text-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--text-secondary)]">
             控制台
           </p>
           <nav className="mt-4 space-y-2">
@@ -36,14 +36,14 @@ export default async function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className="block rounded-lg px-3 py-2 font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+                className="block rounded-xl border border-[var(--surface-border)] bg-[var(--surface-muted)] px-3 py-2 font-medium text-[var(--text-secondary)] transition hover:border-[var(--surface-border-strong)] hover:text-[var(--text-primary)]"
               >
                 {item.label}
               </Link>
             ))}
           </nav>
         </aside>
-        <div className="min-h-[60vh] rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="panel min-h-[60vh] p-8">
           {children}
         </div>
       </Container>

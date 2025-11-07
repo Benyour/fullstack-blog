@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
-    "prisma:generate": "prisma generate",
+    "postinstall": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
-    "db:seed": "node --loader tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -20,6 +20,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "feed": "^4.2.2",
+    "framer-motion": "^11.0.0",
     "lucide-react": "^0.473.0",
     "nanoid": "^5.0.7",
     "next": "16.0.1",
