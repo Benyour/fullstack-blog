@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -11,11 +11,13 @@ function postWhere(postId: string) {
 }
 
 export async function GET(
-  _request: Request,
-  { params }: { params: { postId: string } },
+  _request: NextRequest,
+  { params }: { params: Promise<{ postId: string }> },
 ) {
+  const { postId } = await params;
+
   const post = await prisma.post.findFirst({
-    where: postWhere(params.postId),
+    where: postWhere(postId),
     include: {
       tags: { include: { tag: true } },
       author: {
@@ -40,9 +42,11 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { postId: string } },
+  request: NextRequest,
+  { params }: { params: Promise<{ postId: string }> },
 ) {
+  const { postId } = await params;
+
   const session = await getAuthSession();
 
   if (!session?.user || session.user.role !== "ADMIN") {
@@ -56,7 +60,7 @@ export async function PUT(
     return NextResponse.json({ errors: data.error.flatten() }, { status: 400 });
   }
 
-  const existing = await prisma.post.findFirst({ where: postWhere(params.postId) });
+  const existing = await prisma.post.findFirst({ where: postWhere(postId) });
 
   if (!existing) {
     return new NextResponse("Not Found", { status: 404 });
@@ -107,16 +111,18 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: Request,
-  { params }: { params: { postId: string } },
+  _request: NextRequest,
+  { params }: { params: Promise<{ postId: string }> },
 ) {
+  const { postId } = await params;
+
   const session = await getAuthSession();
 
   if (!session?.user || session.user.role !== "ADMIN") {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const existing = await prisma.post.findFirst({ where: postWhere(params.postId) });
+  const existing = await prisma.post.findFirst({ where: postWhere(postId) });
 
   if (!existing) {
     return new NextResponse("Not Found", { status: 404 });
