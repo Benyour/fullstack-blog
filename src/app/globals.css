@@ -76,6 +76,15 @@ select {
   box-shadow: var(--shadow-soft);
 }
 
+.post-card {
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 240ms ease;
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow-strong);
+}
+
 .btn-accent {
   display: inline-flex;
   align-items: center;
