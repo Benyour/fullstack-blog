@@ -177,7 +177,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
       <section className="grid gap-4 md:grid-cols-2">
         <ImageUploadField
           label="头像"
-          preview={avatarUrl}
+          preview={avatarUrl ?? ""}
           onUpload={async (file) => {
             await handleUpload(file, "avatarUrl");
           }}
@@ -187,7 +187,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
         />
         <ImageUploadField
           label="头图"
-          preview={heroImage}
+          preview={heroImage ?? ""}
           onUpload={async (file) => {
             await handleUpload(file, "heroImage");
           }}

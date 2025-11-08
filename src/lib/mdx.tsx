@@ -29,15 +29,8 @@ export async function renderMDX(source: string, options: RenderMDXOptions = {}):
 }
 
 export async function renderMDXToString(source: string, options: RenderMDXOptions = {}): Promise<string> {
-  const element = await renderMDX(
-    source,
-    options,
-  );
-
-  const container = document.createElement("div");
+  const element = await renderMDX(source, options);
   const { renderToString } = await import("react-dom/server");
-  container.innerHTML = renderToString(<Fragment>{element}</Fragment>);
-
-  return container.innerHTML;
+  return renderToString(<Fragment>{element}</Fragment>);
 }
 

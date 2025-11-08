@@ -25,12 +25,12 @@ type MessageCenterProps = {
   };
 };
 
-const FILTERS = [
+const FILTERS: Array<{ key: "all" | ContactStatus; label: string }> = [
   { key: "all", label: "全部" },
-  { key: ContactStatus.NEW, label: "待处理" },
-  { key: ContactStatus.IN_PROGRESS, label: "进行中" },
-  { key: ContactStatus.RESOLVED, label: "已完成" },
-] as const;
+  { key: "NEW", label: "待处理" },
+  { key: "IN_PROGRESS", label: "进行中" },
+  { key: "RESOLVED", label: "已完成" },
+];
 
 export function MessageCenter({ initialMessages, statusCount }: MessageCenterProps) {
   const [messages, setMessages] = useState(initialMessages);
@@ -116,9 +116,9 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
             {item.label}
             {item.key !== "all" && (
               <span className="ml-1 rounded-full bg-[var(--surface-muted)] px-2 py-0.5 text-[var(--text-secondary)]">
-                {item.key === ContactStatus.NEW
+                {item.key === "NEW"
                   ? statusCount.new
-                  : item.key === ContactStatus.IN_PROGRESS
+                  : item.key === "IN_PROGRESS"
                   ? statusCount.inProgress
                   : statusCount.resolved}
               </span>
@@ -139,7 +139,7 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h3 className="text-base font-semibold text-[var(--text-primary)]">{message.name}</h3>
-                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--text-secondary)]">
+                  <div className="mt-1 flex flex-wrap itemscenter gap-2 text-xs text-[var(--text-secondary)]">
                     <a href={`mailto:${message.email}`} className="underline decoration-dotted underline-offset-4">
                       {message.email}
                     </a>
@@ -183,9 +183,9 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
                         }
                         disabled={status === "loading"}
                       >
-                        <option value={ContactStatus.NEW}>待处理</option>
-                        <option value={ContactStatus.IN_PROGRESS}>进行中</option>
-                        <option value={ContactStatus.RESOLVED}>已完成</option>
+                        <option value="NEW">待处理</option>
+                        <option value="IN_PROGRESS">进行中</option>
+                        <option value="RESOLVED">已完成</option>
                       </select>
                     </div>
                     <button
@@ -230,16 +230,12 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
 
 function StatusBadge({ status }: { status: ContactStatus }) {
   const label =
-    status === ContactStatus.NEW
-      ? "待处理"
-      : status === ContactStatus.IN_PROGRESS
-      ? "进行中"
-      : "已完成";
+    status === "NEW" ? "待处理" : status === "IN_PROGRESS" ? "进行中" : "已完成";
 
   const styles =
-    status === ContactStatus.NEW
+    status === "NEW"
       ? "bg-amber-400/15 text-amber-600 dark:bg-amber-300/20 dark:text-amber-200"
-      : status === ContactStatus.IN_PROGRESS
+      : status === "IN_PROGRESS"
       ? "bg-sky-400/15 text-sky-600 dark:bg-sky-300/20 dark:text-sky-200"
       : "bg-emerald-400/15 text-emerald-600 dark:bg-emerald-300/20 dark:text-emerald-200";
 

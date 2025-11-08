@@ -139,7 +139,7 @@ export async function PUT(
       summary,
       content,
       coverImage: coverImage || null,
-      published: shouldPublish,
+      published: shouldPublish || existing.published,
       publishedAt: shouldPublish ? existing.publishedAt ?? new Date() : null,
       scheduledAt: scheduledAtDate,
       tags: {

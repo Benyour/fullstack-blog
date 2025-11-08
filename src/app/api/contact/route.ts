@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ContactStatus, Prisma } from "@prisma/client";
 import { Resend } from "resend";
 
 import { getAuthSession } from "@/lib/auth";
@@ -20,8 +21,14 @@ export async function GET(request: Request) {
   const status = searchParams.get("status");
   const take = Number(searchParams.get("take") ?? 50);
 
+  const where: Prisma.ContactMessageWhereInput = {};
+
+  if (status && Object.values(ContactStatus).includes(status as ContactStatus)) {
+    where.status = status as ContactStatus;
+  }
+
   const messages = await prisma.contactMessage.findMany({
-    where: status ? { status } : undefined,
+    where,
     orderBy: { createdAt: "desc" },
     take,
   });

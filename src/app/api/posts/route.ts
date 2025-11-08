@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       summary,
       content,
       coverImage: coverImage || null,
-      published: shouldPublish,
+      published: shouldPublish || Boolean(published),
       publishedAt: shouldPublish ? new Date() : null,
       scheduledAt: scheduledAtDate,
       authorId: session.user.id,

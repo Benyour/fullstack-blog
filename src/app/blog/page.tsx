@@ -116,12 +116,12 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               搜索
             </button>
             {(searchQuery || activeTagSlug || currentPage > 1) && (
-              <a
+              <Link
                 href="/blog"
                 className="btn-outline flex w-full justify-center px-5 py-2 text-sm font-medium md:w-auto"
               >
                 重置筛选
-              </a>
+              </Link>
             )}
           </form>
         </header>
