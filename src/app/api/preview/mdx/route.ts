@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { renderToString } from "react-dom/server";
 
-import { renderMDX } from "@/lib/mdx";
+import { renderMDXToString } from "@/lib/mdx";
 
 export async function POST(request: Request) {
   const payload = await request.json();
@@ -12,8 +11,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const element = await renderMDX(content);
-    const html = renderToString(element);
+    const html = await renderMDXToString(content);
     return NextResponse.json({ html });
   } catch (error) {
     console.error(error);

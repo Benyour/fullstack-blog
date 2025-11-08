@@ -1,5 +1,5 @@
 import { compileMDX } from "next-mdx-remote/rsc";
-import type { ReactElement } from "react";
+import { Fragment, type ReactElement } from "react";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
@@ -26,5 +26,18 @@ export async function renderMDX(source: string, options: RenderMDXOptions = {}):
   });
 
   return content;
+}
+
+export async function renderMDXToString(source: string, options: RenderMDXOptions = {}): Promise<string> {
+  const element = await renderMDX(
+    source,
+    options,
+  );
+
+  const container = document.createElement("div");
+  const { renderToString } = await import("react-dom/server");
+  container.innerHTML = renderToString(<Fragment>{element}</Fragment>);
+
+  return container.innerHTML;
 }
 
