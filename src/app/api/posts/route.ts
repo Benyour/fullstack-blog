@@ -8,6 +8,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const publishedParam = searchParams.get("published");
   const take = Number(searchParams.get("take") ?? 20);
+  const includeDraftFlag = publishedParam === null;
 
   const posts = await prisma.post.findMany({
     where: {
@@ -30,6 +31,14 @@ export async function GET(request: Request) {
           profile: true,
         },
       },
+      _count: {
+        select: {
+          comments: {
+            where: { approved: true },
+          },
+          reactions: true,
+        },
+      },
     },
   });
 
@@ -43,10 +52,16 @@ export async function GET(request: Request) {
       coverImage: post.coverImage,
       published: post.published,
       publishedAt: post.publishedAt,
+      scheduledAt: post.scheduledAt,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
+      isDraft: includeDraftFlag ? !post.published : undefined,
       tags: post.tags.map(({ tag }) => tag),
       author: post.author,
+      stats: {
+        comments: post._count.comments,
+        likes: post._count.reactions,
+      },
     })),
   );
 }
@@ -66,7 +81,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ errors: data.error.flatten() }, { status: 400 });
   }
 
-  const { title, slug, summary, content, coverImage, tags, published } = data.data;
+  const { title, slug, summary, content, coverImage, tags, published, scheduledAt } = data.data;
 
   const exists = await prisma.post.findUnique({ where: { slug } });
 
@@ -89,6 +104,9 @@ export async function POST(request: Request) {
     );
   }
 
+  const scheduledAtDate = scheduledAt && scheduledAt !== "" ? new Date(scheduledAt) : null;
+  const shouldPublish = Boolean(published) || (scheduledAtDate && scheduledAtDate <= new Date());
+
   const post = await prisma.post.create({
     data: {
       title,
@@ -96,8 +114,9 @@ export async function POST(request: Request) {
       summary,
       content,
       coverImage: coverImage || null,
-      published: Boolean(published),
-      publishedAt: published ? new Date() : null,
+      published: shouldPublish,
+      publishedAt: shouldPublish ? new Date() : null,
+      scheduledAt: scheduledAtDate,
       authorId: session.user.id,
       tags: {
         create: tags.map((tag) => ({
@@ -111,6 +130,16 @@ export async function POST(request: Request) {
       tags: {
         include: { tag: true },
       },
+    },
+  });
+
+  await prisma.postRevision.create({
+    data: {
+      postId: post.id,
+      editorId: session.user.id,
+      title,
+      summary,
+      content,
     },
   });
 

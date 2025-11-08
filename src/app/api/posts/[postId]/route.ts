@@ -30,6 +30,23 @@ export async function GET(
           profile: true,
         },
       },
+      revisions: {
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        include: {
+          editor: {
+            select: { id: true, name: true, email: true },
+          },
+        },
+      },
+      _count: {
+        select: {
+          comments: {
+            where: { approved: true },
+          },
+          reactions: true,
+        },
+      },
     },
   });
 
@@ -40,6 +57,10 @@ export async function GET(
   return NextResponse.json({
     ...post,
     tags: post.tags.map(({ tag }) => tag),
+    stats: {
+      comments: post._count.comments,
+      likes: post._count.reactions,
+    },
   });
 }
 
@@ -68,7 +89,14 @@ export async function PUT(
     return new NextResponse("Not Found", { status: 404 });
   }
 
-  const { title, slug, summary, content, coverImage, tags, published } = data.data;
+  const { title, slug, summary, content, coverImage, tags, published, scheduledAt } = data.data;
+
+  if (slug !== existing.slug) {
+    const slugExists = await prisma.post.findUnique({ where: { slug } });
+    if (slugExists) {
+      return NextResponse.json({ message: "Slug 已存在" }, { status: 409 });
+    }
+  }
 
   if (tags.length > 0) {
     await Promise.all(
@@ -82,6 +110,27 @@ export async function PUT(
     );
   }
 
+  const scheduledAtDate = scheduledAt && scheduledAt !== "" ? new Date(scheduledAt) : null;
+  const shouldPublish = Boolean(published) || (scheduledAtDate && scheduledAtDate <= new Date());
+
+  const hasContentChanges =
+    existing.title !== title ||
+    existing.summary !== summary ||
+    existing.content !== content ||
+    existing.coverImage !== (coverImage || null);
+
+  if (hasContentChanges) {
+    await prisma.postRevision.create({
+      data: {
+        postId: existing.id,
+        editorId: session.user.id,
+        title: existing.title,
+        summary: existing.summary,
+        content: existing.content,
+      },
+    });
+  }
+
   const post = await prisma.post.update({
     where: { id: existing.id },
     data: {
@@ -90,8 +139,9 @@ export async function PUT(
       summary,
       content,
       coverImage: coverImage || null,
-      published: Boolean(published),
-      publishedAt: published ? existing.publishedAt ?? new Date() : null,
+      published: shouldPublish,
+      publishedAt: shouldPublish ? existing.publishedAt ?? new Date() : null,
+      scheduledAt: scheduledAtDate,
       tags: {
         deleteMany: {},
         create: tags.map((tag) => ({
@@ -103,12 +153,33 @@ export async function PUT(
     },
     include: {
       tags: { include: { tag: true } },
+      revisions: {
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        include: {
+          editor: {
+            select: { id: true, name: true, email: true },
+          },
+        },
+      },
+      _count: {
+        select: {
+          comments: {
+            where: { approved: true },
+          },
+          reactions: true,
+        },
+      },
     },
   });
 
   return NextResponse.json({
     ...post,
     tags: post.tags.map(({ tag }) => tag),
+    stats: {
+      comments: post._count.comments,
+      likes: post._count.reactions,
+    },
   });
 }
 

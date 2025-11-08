@@ -1,12 +1,25 @@
 import Link from "next/link";
 
 import { ContactForm } from "@/components/forms/contact-form";
+import { NewsletterForm } from "@/components/forms/newsletter-form";
 import { Container } from "@/components/layout/container";
 import { PostCard } from "@/components/posts/post-card";
 import { ParticleField } from "@/components/ui/particle-field";
 import { prisma } from "@/lib/prisma";
+import { calculateReadingTime } from "@/lib/server-utils";
 
 export default async function Home() {
+  await prisma.post.updateMany({
+    where: {
+      published: false,
+      scheduledAt: { lte: new Date() },
+    },
+    data: {
+      published: true,
+      publishedAt: new Date(),
+    },
+  });
+
   const [profile, posts, tags] = await Promise.all([
     prisma.profile.findFirst({
       include: {
@@ -22,8 +35,26 @@ export default async function Home() {
       where: { published: true },
       orderBy: { publishedAt: "desc" },
       take: 3,
-      include: {
-        tags: { include: { tag: true } },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        summary: true,
+        content: true,
+        publishedAt: true,
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
+        _count: {
+          select: {
+            reactions: true,
+            comments: {
+              where: { approved: true },
+            },
+          },
+        },
       },
     }),
     prisma.tag.findMany({ orderBy: { name: "asc" } }),
@@ -94,6 +125,23 @@ export default async function Home() {
       </section>
 
       <section>
+        <Container className="panel flex flex-col gap-4 px-8 py-10 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-xl space-y-2">
+            <span className="inline-flex items-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-muted)] px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[var(--text-secondary)]">
+              Newsletter
+            </span>
+            <h2 className="text-2xl font-semibold text-[var(--text-primary)]">订阅我的技术周报</h2>
+            <p className="text-sm text-[var(--text-secondary)]">
+              每周精选工程实践、产品体验与值得关注的工具，发送至你的邮箱。
+            </p>
+          </div>
+          <div className="w-full max-w-md">
+            <NewsletterForm />
+          </div>
+        </Container>
+      </section>
+
+      <section>
         <Container className="relative">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -125,6 +173,11 @@ export default async function Home() {
                     name: tag.name,
                     slug: tag.slug,
                   })),
+                  readingMinutes: calculateReadingTime(post.content),
+                  stats: {
+                    likes: post._count.reactions,
+                    comments: post._count.comments,
+                  },
                 }}
               />
             ))}

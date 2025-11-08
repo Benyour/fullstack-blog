@@ -19,6 +19,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
+  editedRevisions PostRevision[] @relation("PostRevisionEditor")
+  authoredComments Comment[]     @relation("CommentAuthor")
+  reactions        PostReaction[] @relation("PostReactionUser")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -45,9 +48,13 @@ model Post {
   coverImage  String?
   published   Boolean   @default(false)
   publishedAt DateTime?
+  scheduledAt DateTime?
   author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    String
   tags        PostTag[]
+  revisions   PostRevision[]
+  comments    Comment[]
+  reactions   PostReaction[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -72,11 +79,15 @@ model PostTag {
 }
 
 model ContactMessage {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  message   String
-  createdAt DateTime @default(now())
+  id         String         @id @default(cuid())
+  name       String
+  email      String
+  message    String
+  status     ContactStatus  @default(NEW)
+  notes      String?
+  resolvedAt DateTime?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 }
 
 model Session {
@@ -119,4 +130,78 @@ model VerificationToken {
 enum UserRole {
   USER
   ADMIN
+}
+
+model PostRevision {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  editor    User?    @relation("PostRevisionEditor", fields: [editorId], references: [id], onDelete: SetNull)
+  editorId  String?
+  title     String
+  summary   String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  author    User?    @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+  authorId  String?
+  name      String?
+  email     String?
+  body      String
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PostReaction {
+  id          String        @id @default(cuid())
+  post        Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      String
+  user        User?         @relation("PostReactionUser", fields: [userId], references: [id], onDelete: SetNull)
+  userId      String?
+  fingerprint String
+  type        ReactionType
+  createdAt   DateTime @default(now())
+
+  @@unique([postId, fingerprint, type])
+}
+
+model NewsletterSubscription {
+  id        String             @id @default(cuid())
+  email     String             @unique
+  status    SubscriptionStatus @default(ACTIVE)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  unsubscribedAt DateTime?
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  slug      String
+  date      DateTime
+  views     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([slug, date])
+}
+
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum ReactionType {
+  LIKE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  UNSUBSCRIBED
 }

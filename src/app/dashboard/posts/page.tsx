@@ -12,6 +12,14 @@ export default async function DashboardPostsPage() {
     orderBy: { updatedAt: "desc" },
     include: {
       tags: { include: { tag: true } },
+      _count: {
+        select: {
+          reactions: true,
+          comments: {
+            where: { approved: true },
+          },
+        },
+      },
     },
   });
 
@@ -43,6 +51,7 @@ export default async function DashboardPostsPage() {
               <th className="w-24 p-4 font-semibold text-[var(--text-secondary)]">状态</th>
               <th className="w-32 p-4 font-semibold text-[var(--text-secondary)]">更新于</th>
               <th className="w-48 p-4 font-semibold text-[var(--text-secondary)]">标签</th>
+              <th className="w-32 p-4 font-semibold text-[var(--text-secondary)]">互动</th>
               <th className="w-32 p-4 text-right font-semibold text-[var(--text-secondary)]">操作</th>
             </tr>
           </thead>
@@ -60,6 +69,10 @@ export default async function DashboardPostsPage() {
                     <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:bg-emerald-300/20 dark:text-emerald-200">
                       已发布
                     </span>
+                  ) : post.scheduledAt ? (
+                    <span className="rounded-full bg-sky-400/15 px-2 py-0.5 text-xs font-medium text-sky-600 dark:bg-sky-300/20 dark:text-sky-200">
+                      已定时
+                    </span>
                   ) : (
                     <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-xs font-medium text-amber-600 dark:bg-amber-300/20 dark:text-amber-200">
                       草稿
@@ -71,6 +84,9 @@ export default async function DashboardPostsPage() {
                 </td>
                 <td className="truncate p-4 text-xs text-[var(--text-secondary)]">
                   {post.tags.map(({ tag }) => `#${tag.name}`).join("、") || "-"}
+                </td>
+                <td className="p-4 text-xs text-[var(--text-secondary)]">
+                  👍 {post._count.reactions} · 💬 {post._count.comments}
                 </td>
                 <td className="p-4">
                   <div className="flex items-center justify-end gap-2">

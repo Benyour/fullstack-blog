@@ -10,6 +10,11 @@ export const upsertPostSchema = z.object({
   content: z.string().min(20, "正文至少 20 个字符"),
   coverImage: z.string().url("请输入合法的图片 URL").optional().or(z.literal("")),
   published: z.boolean().optional().default(false),
+  scheduledAt: z
+    .string()
+    .datetime()
+    .optional()
+    .or(z.literal("")),
   tags: z.array(z.string()).default([]),
 });
 

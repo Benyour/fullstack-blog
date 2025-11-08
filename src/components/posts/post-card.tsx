@@ -17,6 +17,11 @@ type PostSummary = {
   summary: string;
   publishedAt: Date | null;
   tags: Tag[];
+  readingMinutes?: number;
+  stats?: {
+    likes: number;
+    comments: number;
+  };
 };
 
 export function PostCard({ post, className }: { post: PostSummary; className?: string }) {
@@ -31,9 +36,12 @@ export function PostCard({ post, className }: { post: PostSummary; className?: s
         className,
       )}
     >
-      <div className="flex items-center justify-between text-[0.78rem] text-[var(--text-secondary)]">
-        <span>{dateLabel}</span>
-        <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-[0.78rem] text-[var(--text-secondary)]">
+        <div className="flex items-center gap-2">
+          <span>{dateLabel}</span>
+          {post.readingMinutes ? <span>· {post.readingMinutes} 分钟</span> : null}
+        </div>
+        <div className="flex flex-wrap gap-2 text-[0.7rem]">
           {post.tags.map((tag) => (
             <span key={tag.slug} className="chip text-xs">
               #{tag.name}
@@ -47,6 +55,12 @@ export function PostCard({ post, className }: { post: PostSummary; className?: s
         </h3>
       </Link>
       <p className="clamp-3 break-words text-sm leading-relaxed text-[var(--text-secondary)] overflow-hidden">{post.summary}</p>
+      {post.stats && (
+        <div className="flex gap-3 text-xs text-[var(--text-secondary)]">
+          <span>👍 {post.stats.likes}</span>
+          <span>💬 {post.stats.comments}</span>
+        </div>
+      )}
       <Link href={`/blog/${post.slug}`} className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent)] transition hover:text-[var(--accent-hover)]">
         阅读全文
         <span aria-hidden className="transition group-hover:translate-x-1">→</span>

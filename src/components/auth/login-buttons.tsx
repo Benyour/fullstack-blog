@@ -50,7 +50,7 @@ export function LoginButtons() {
     <div className="space-y-6">
       <button
         onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+        className="btn-accent flex w-full gap-2 px-5 py-2 text-sm font-semibold"
         type="button"
       >
         使用 GitHub 登录
@@ -66,14 +66,14 @@ export function LoginButtons() {
           id="email"
           type="email"
           placeholder="you@example.com"
-          className="w-full rounded-full border border-slate-200 px-4 py-2 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950"
+          className="input-field rounded-full"
           {...register("email")}
         />
         {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
         <button
           type="submit"
           disabled={state === "loading"}
-          className="inline-flex w-full items-center justify-center rounded-full border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:border-slate-300 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-600 dark:text-slate-200"
+          className="btn-outline flex w-full justify-center px-5 py-2 font-medium disabled:cursor-not-allowed disabled:opacity-60"
         >
           {state === "loading" ? "发送中..." : "发送登录邮件"}
         </button>

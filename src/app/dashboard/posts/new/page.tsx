@@ -1,10 +1,15 @@
+import { prisma } from "@/lib/prisma";
 import { PostEditor } from "@/components/dashboard/post-editor";
 
 export const metadata = {
   title: "新建文章",
 };
 
-export default function NewPostPage() {
+export default async function NewPostPage() {
+  const tags = await prisma.tag.findMany({
+    orderBy: { name: "asc" },
+  });
+
   return (
     <div className="space-y-6">
       <header>
@@ -14,7 +19,14 @@ export default function NewPostPage() {
         </p>
       </header>
 
-      <PostEditor mode="create" />
+      <PostEditor
+        mode="create"
+        availableTags={tags.map((tag) => ({
+          id: tag.id,
+          name: tag.name,
+          slug: tag.slug,
+        }))}
+      />
     </div>
   );
 }
