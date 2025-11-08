@@ -109,24 +109,24 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
   return (
     <form onSubmit={onSubmit} className="space-y-6 text-sm">
       <section className="grid gap-4 md:grid-cols-2">
-        <div className="grid gap-2">
+        <div className="grid gap-2 min-w-0">
           <label className="font-medium text-[var(--text-primary)]" htmlFor="userName">
             姓名
           </label>
           <input
             id="userName"
-            className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+            className="input-field"
             {...register("userName")}
           />
           {errors.userName && <p className="text-xs text-red-500">{errors.userName.message}</p>}
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-2 min-w-0">
           <label className="font-medium text-[var(--text-primary)]" htmlFor="userEmail">
             邮箱
           </label>
           <input
             id="userEmail"
-            className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+            className="input-field"
             {...register("userEmail")}
           />
           {errors.userEmail && <p className="text-xs text-red-500">{errors.userEmail.message}</p>}
@@ -134,25 +134,25 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
       </section>
 
       <section className="grid gap-4 md:grid-cols-2">
-        <div className="grid gap-2">
+        <div className="grid gap-2 min-w-0">
           <label className="font-medium text-[var(--text-primary)]" htmlFor="headline">
             主页标题
           </label>
           <input
             id="headline"
-            className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+            className="input-field"
             placeholder="你好，我是..."
             {...register("headline")}
           />
           {errors.headline && <p className="text-xs text-red-500">{errors.headline.message}</p>}
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-2 min-w-0">
           <label className="font-medium text-[var(--text-primary)]" htmlFor="location">
             常驻城市
           </label>
           <input
             id="location"
-            className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+            className="input-field"
             placeholder="北京 / Remote"
             {...register("location")}
           />
@@ -167,7 +167,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
         <textarea
           id="bio"
           rows={5}
-          className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 leading-relaxed focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+          className="input-field resize-none py-3"
           placeholder="介绍你的经历、擅长领域，以及正在关注的方向..."
           {...register("bio")}
         />
@@ -197,7 +197,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
         />
       </section>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3">
         <button
           type="submit"
           className="btn-accent flex items-center justify-center px-6 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
@@ -232,7 +232,7 @@ function ImageUploadField({ label, preview, onUpload, onManualChange, placeholde
           <img src={preview} alt={label} className="h-40 w-full object-cover" />
         </div>
       )}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <input
           ref={inputRef}
           type="file"
@@ -247,17 +247,17 @@ function ImageUploadField({ label, preview, onUpload, onManualChange, placeholde
         />
         <button
           type="button"
-          className="btn-outline flex items-center justify-center px-4 py-2 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--accent)]"
+          className="btn-outline px-4 py-2 text-xs font-medium"
           onClick={() => inputRef.current?.click()}
         >
           上传图片
         </button>
         <input
           type="url"
-          className="flex-1 rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+          className="input-field flex-1"
           placeholder={placeholder}
           defaultValue={preview}
-          onBlur={(event) => onManualChange(event.target.value)}
+          onChange={(e) => onManualChange(e.target.value)}
         />
       </div>
       {error && <p className="text-xs text-red-500">{error}</p>}

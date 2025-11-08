@@ -213,11 +213,11 @@ function TagRow({
   };
 
   return (
-    <div className="grid gap-3 p-4 md:grid-cols-[minmax(0,2fr),minmax(0,1fr),auto] md:items-center">
-      <div className="grid gap-1">
+    <div className="grid gap-3 p-4 md:grid-cols-[minmax(0,2fr),minmax(0,1.2fr),auto] md:items-center">
+      <div className="grid gap-1 min-w-0">
         <label className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-secondary)]">名称</label>
         <input
-          className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+          className="input-field min-w-0"
           value={name}
           onChange={(event) => {
             setEditing(true);
@@ -226,10 +226,10 @@ function TagRow({
           disabled={disabled}
         />
       </div>
-      <div className="grid gap-1">
+      <div className="grid gap-1 min-w-0">
         <label className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-secondary)]">Slug</label>
         <input
-          className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+          className="input-field min-w-0"
           value={slug}
           onChange={(event) => {
             setEditing(true);
@@ -238,8 +238,8 @@ function TagRow({
           disabled={disabled}
         />
       </div>
-      <div className="flex flex-wrap items-center gap-2 md:justify-end">
-        <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-xs text-[var(--text-secondary)]">
+      <div className="flex flex-wrap items-center justify-end gap-2 text-xs">
+        <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-[var(--text-secondary)]">
           {tag.postCount} 篇文章
         </span>
         {editing ? (
@@ -247,7 +247,7 @@ function TagRow({
             type="button"
             onClick={handleSave}
             disabled={disabled}
-            className="rounded-full bg-emerald-500 px-4 py-1 text-xs font-medium text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="btn-accent px-4 py-1 font-medium disabled:cursor-not-allowed disabled:opacity-60"
           >
             保存
           </button>
@@ -256,8 +256,7 @@ function TagRow({
             type="button"
             onClick={() => onDelete(tag.id)}
             disabled={disabled || tag.postCount > 0}
-            className="rounded-full bg-red-500 px-4 py-1 text-xs font-medium text-white transition hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60"
-            title={tag.postCount > 0 ? "存在关联文章，删除前请先移除文章中的标签" : "删除标签"}
+            className="btn-outline px-4 py-1 font-medium disabled:cursor-not-allowed disabled:opacity-60"
           >
             删除
           </button>

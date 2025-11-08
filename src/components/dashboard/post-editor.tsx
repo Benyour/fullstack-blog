@@ -887,23 +887,51 @@ ${text}
 
 function WritingGuidance({ scheduledCountdown }: { scheduledCountdown: string | null }) {
   return (
-    <section className="panel-muted grid gap-4 rounded-2xl border border-[var(--surface-border)] p-4 text-xs text-[var(--text-secondary)] sm:grid-cols-[minmax(0,1fr),minmax(0,0.8fr)] sm:text-sm">
-      <div className="space-y-2">
-        <p className="text-sm font-semibold text-[var(--text-primary)]">写作提示</p>
-        <ul className="space-y-1">
-          <li>· 开头使用 2-3 句引出问题，结尾附上行动建议或资源链接。</li>
-          <li>· 检查每个小节标题是否包含核心关键词，段落不超过 5 行。</li>
-          <li>· 确认文中包含至少 1 个代码/示例或图示说明。</li>
-        </ul>
-      </div>
-      <div className="space-y-2">
-        <p className="text-sm font-semibold text-[var(--text-primary)]">SEO 建议</p>
-        <ul className="space-y-1">
-          <li>· Meta 标题不超过 60 字符，确保摘要涵盖关键词。</li>
-          <li>· 若引用外部资料，请补充链接并加上 rel="nofollow"。</li>
-          <li>· 添加封面图 Alt 文案，便于搜索引擎识别。</li>
-        </ul>
-        {scheduledCountdown && <p className="text-xs text-[var(--accent)]">{scheduledCountdown}</p>}
+    <section className="rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-muted)] p-4 text-xs text-[var(--text-secondary)] sm:panel-muted sm:border-transparent sm:p-0 sm:text-sm">
+      <details className="sm:hidden">
+        <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-[var(--text-primary)]">
+          写作提示
+          <span className="text-xs text-[var(--text-secondary)]">展开</span>
+        </summary>
+        <div className="mt-3 space-y-3">
+          <div className="space-y-2">
+            <p className="font-semibold text-[var(--text-primary)]">写作提示</p>
+            <ul className="space-y-1">
+              <li>· 开头使用 2-3 句引出问题，结尾附上行动建议或资源链接。</li>
+              <li>· 检查每个小节标题是否包含核心关键词，段落不超过 5 行。</li>
+              <li>· 确认文中包含至少 1 个代码/示例或图示说明。</li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <p className="font-semibold text-[var(--text-primary)]">SEO 建议</p>
+            <ul className="space-y-1">
+              <li>· Meta 标题不超过 60 字符，确保摘要涵盖关键词。</li>
+              <li>· 若引用外部资料，请补充链接并加上 rel="nofollow"。</li>
+              <li>· 添加封面图 Alt 文案，便于搜索引擎识别。</li>
+            </ul>
+            {scheduledCountdown && <p className="text-[var(--accent)]">{scheduledCountdown}</p>}
+          </div>
+        </div>
+      </details>
+
+      <div className="hidden gap-6 text-sm text-[var(--text-secondary)] sm:grid sm:grid-cols-[minmax(0,1fr),minmax(0,0.8fr)]">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-[var(--text-primary)]">写作提示</p>
+          <ul className="space-y-1">
+            <li>· 开头使用 2-3 句引出问题，结尾附上行动建议或资源链接。</li>
+            <li>· 检查每个小节标题是否包含核心关键词，段落不超过 5 行。</li>
+            <li>· 确认文中包含至少 1 个代码/示例或图示说明。</li>
+          </ul>
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm font-semibold text-[var(--text-primary)]">SEO 建议</p>
+          <ul className="space-y-1">
+            <li>· Meta 标题不超过 60 字符，确保摘要涵盖关键词。</li>
+            <li>· 若引用外部资料，请补充链接并加上 rel="nofollow"。</li>
+            <li>· 添加封面图 Alt 文案，便于搜索引擎识别。</li>
+          </ul>
+          {scheduledCountdown && <p className="text-xs text-[var(--accent)]">{scheduledCountdown}</p>}
+        </div>
       </div>
     </section>
   );
@@ -912,12 +940,25 @@ function WritingGuidance({ scheduledCountdown }: { scheduledCountdown: string | 
 function WritingTipsCard() {
   return (
     <section className="rounded-2xl border border-dashed border-[var(--surface-border)] bg-[var(--surface-muted)] p-4 text-xs text-[var(--text-secondary)]">
-      <p className="text-sm font-semibold text-[var(--text-primary)]">快速检查</p>
-      <ul className="mt-2 space-y-1">
-        <li>· 文章是否具备吸引人的开篇与清晰的结构？</li>
-        <li>· 是否补充了 Meta 标题、描述及封面图 Alt？</li>
-        <li>· 是否添加了 CTA（订阅、联系或下一步行动）？</li>
-      </ul>
+      <details className="sm:hidden">
+        <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold text-[var(--text-primary)]">
+          快速检查
+          <span className="text-xs text-[var(--text-secondary)]">展开</span>
+        </summary>
+        <ul className="mt-3 space-y-1">
+          <li>· 文章是否具备吸引人的开篇与清晰的结构？</li>
+          <li>· 是否补充了 Meta 标题、描述及封面图 Alt？</li>
+          <li>· 是否添加了 CTA（订阅、联系或下一步行动）？</li>
+        </ul>
+      </details>
+      <div className="hidden sm:block">
+        <p className="text-sm font-semibold text-[var(--text-primary)]">快速检查</p>
+        <ul className="mt-2 space-y-1">
+          <li>· 文章是否具备吸引人的开篇与清晰的结构？</li>
+          <li>· 是否补充了 Meta 标题、描述及封面图 Alt？</li>
+          <li>· 是否添加了 CTA（订阅、联系或下一步行动）？</li>
+        </ul>
+      </div>
     </section>
   );
 }

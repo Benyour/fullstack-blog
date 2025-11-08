@@ -100,7 +100,7 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
   }
 
   return (
-    <div className="space-y-5 text-sm">
+    <div className="space-y-5 text-sm sm:space-y-6">
       <div className="flex flex-wrap items-center gap-2">
         {FILTERS.map((item) => (
           <button
@@ -137,10 +137,10 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
           return (
             <div key={message.id} className="space-y-4 p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <h3 className="text-base font-semibold text-[var(--text-primary)]">{message.name}</h3>
+                <div className="min-w-0">
+                  <h3 className="text-base font-semibold text-[var(--text-primary)] break-words">{message.name}</h3>
                   <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--text-secondary)]">
-                    <a href={`mailto:${message.email}`} className="underline decoration-dotted underline-offset-4">
+                    <a href={`mailto:${message.email}`} className="underline decoration-dotted underline-offset-4 break-all">
                       {message.email}
                     </a>
                     <span>·</span>
@@ -159,7 +159,7 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
                   <button
                     type="button"
                     onClick={() => setActiveMessageId((prev) => (prev === message.id ? null : message.id))}
-                    className="rounded-full border border-[var(--surface-border)] px-3 py-1 text-xs text-[var(--text-secondary)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                    className="btn-outline px-3 py-1 text-xs"
                   >
                     {isActive ? "收起" : "展开"}
                   </button>
@@ -172,11 +172,11 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
 
               {isActive && (
                 <div className="space-y-3 rounded-xl border border-[var(--surface-border)] bg-[var(--surface-muted)] p-4 text-xs">
-                  <div className="grid gap-2 md:grid-cols-[1fr,1fr] md:items-center">
+                  <div className="grid gap-3 md:grid-cols-[1fr,1fr] md:items-center">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-semibold text-[var(--text-secondary)]">状态：</span>
                       <select
-                        className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+                        className="input-field"
                         value={message.status}
                         onChange={(event) =>
                           updateMessage(message.id, { status: event.target.value as ContactStatus })
@@ -191,39 +191,38 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
                     <button
                       type="button"
                       onClick={() => deleteMessage(message.id)}
-                      className="ml-auto inline-flex items-center gap-1 rounded-full bg-red-500 px-4 py-2 font-medium text-white transition hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="btn-danger ml-auto inline-flex items-center gap-1 px-4 py-2 font-medium disabled:cursor-not-allowed disabled:opacity-60"
                       disabled={status === "loading"}
                     >
                       删除
                     </button>
                   </div>
 
-                  <div className="grid gap-2">
-                    <label className="font-semibold text-[var(--text-secondary)]">跟进记录</label>
+                  <div className="grid gap-1">
+                    <label htmlFor={`notes-${message.id}`} className="font-semibold text-[var(--text-secondary)]">
+                      备注（仅后台可见）
+                    </label>
                     <textarea
+                      id={`notes-${message.id}`}
                       rows={3}
-                      className="rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 leading-relaxed focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-muted)]"
+                      className="input-field resize-none py-2"
                       defaultValue={message.notes ?? ""}
-                      placeholder="记录沟通纪要、下一步行动..."
-                      onBlur={(event) => {
-                        if (event.target.value !== (message.notes ?? "")) {
-                          updateMessage(message.id, { notes: event.target.value });
-                        }
-                      }}
+                      onBlur={(event) => updateMessage(message.id, { notes: event.target.value })}
+                      disabled={status === "loading"}
                     />
                   </div>
+
+                  {feedback && (
+                    <p className={`text-xs ${status === "error" ? "text-red-500" : "text-emerald-500"}`}>
+                      {feedback}
+                    </p>
+                  )}
                 </div>
               )}
             </div>
           );
         })}
       </div>
-
-      {feedback && (
-        <p className={`text-xs ${status === "error" ? "text-red-500" : "text-emerald-500"}`}>
-          {feedback}
-        </p>
-      )}
     </div>
   );
 }
