@@ -87,6 +87,18 @@ src/
 
 部署完成后访问 `/dashboard` 进入后台管理。
 
+## 开源到 GitHub 的推荐流程
+
+1. **排查敏感信息**：确认 `.env*` 已被 `.gitignore` 忽略，检查代码中是否硬编码了密钥、数据库连接等。
+2. **准备说明文件**：
+   - `README.md`（本文件）描述项目功能、部署方式。
+   - `env.example` 提供所需环境变量示例。
+   - `LICENSE`（MIT）明确开源协议。
+3. **初始化 Git 仓库**：`git init && git add . && git commit -m "chore: initial release"`。
+4. **在 GitHub 创建仓库**：选择 Public，将远程地址添加为 `origin`，执行 `git push -u origin main`。
+5. **设置仓库信息**：在 GitHub 填写简介、Topics、部署地址等，可选创建 `CONTRIBUTING.md` 说明贡献流程。
+6. **持续维护**：合并 PR 前记得跑 `npm run lint` / `npm run build`，并保持敏感配置只存放在部署平台。
+
 ## 后续规划
 
 - 多角色权限与协作审批流
