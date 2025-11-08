@@ -140,6 +140,7 @@ export async function POST(request: Request) {
       title,
       summary,
       content,
+      coverImage: coverImage || null,
     },
   });
 

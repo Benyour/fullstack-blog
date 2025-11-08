@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { PostEditor } from "@/components/dashboard/post-editor";
+import { RevisionHistory } from "@/components/dashboard/revision-history";
 
 type EditPostPageProps = {
   params: Promise<{
@@ -91,28 +92,31 @@ export default async function EditPostPage({ params }: EditPostPageProps) {
         }))}
       />
 
-      <section className="rounded-2xl border border-[var(--surface-border)] p-6">
-        <h2 className="text-lg font-semibold text-[var(--text-primary)]">版本历史</h2>
-        <p className="mt-1 text-sm text-[var(--text-secondary)]">
-          每次更新都会自动存档，方便回溯与比对。
-        </p>
-        <ul className="mt-4 space-y-3 text-sm text-[var(--text-secondary)]">
-          {post.revisions.map((revision) => (
-            <li key={revision.id} className="rounded-xl bg-[var(--surface-muted)] px-4 py-3">
-              <div className="flex flex-wrap items-center gap-2 text-xs">
-                <span className="font-semibold text-[var(--text-primary)]">
-                  {revision.editor?.name ?? "系统"}
-                </span>
-                <span>·</span>
-                <span>{revision.createdAt.toLocaleString("zh-CN")}</span>
-              </div>
-              <p className="mt-1 text-xs">标题：{revision.title}</p>
-              <p className="text-xs text-[var(--text-secondary)]">摘要：{revision.summary.slice(0, 80)}...</p>
-            </li>
-          ))}
-          {post.revisions.length === 0 && <p className="text-sm">暂无修订记录。</p>}
-        </ul>
-      </section>
+      <RevisionHistory
+        postId={post.id}
+        currentVersion={{
+          title: post.title,
+          summary: post.summary,
+          content: post.content,
+          coverImage: post.coverImage ?? null,
+          updatedAt: post.updatedAt.toISOString(),
+        }}
+        revisions={post.revisions.map((revision) => ({
+          id: revision.id,
+          title: revision.title,
+          summary: revision.summary,
+          content: revision.content,
+          coverImage: revision.coverImage ?? null,
+          createdAt: revision.createdAt.toISOString(),
+          editor: revision.editor
+            ? {
+                id: revision.editor.id,
+                name: revision.editor.name,
+                email: revision.editor.email,
+              }
+            : null,
+        }))}
+      />
     </div>
   );
 }

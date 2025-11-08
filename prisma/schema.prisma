@@ -141,6 +141,7 @@ model PostRevision {
   title     String
   summary   String
   content   String
+  coverImage String?
   createdAt DateTime @default(now())
 }
 

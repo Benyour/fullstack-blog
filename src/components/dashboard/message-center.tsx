@@ -139,7 +139,7 @@ export function MessageCenter({ initialMessages, statusCount }: MessageCenterPro
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h3 className="text-base font-semibold text-[var(--text-primary)]">{message.name}</h3>
-                  <div className="mt-1 flex flex-wrap itemscenter gap-2 text-xs text-[var(--text-secondary)]">
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[var(--text-secondary)]">
                     <a href={`mailto:${message.email}`} className="underline decoration-dotted underline-offset-4">
                       {message.email}
                     </a>

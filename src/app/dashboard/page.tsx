@@ -49,20 +49,20 @@ export default async function DashboardHomePage() {
   });
 
   return (
-    <div className="flex h-full flex-col gap-8">
+    <div className="flex h-full flex-col gap-6 md:gap-8">
       <header>
         <span className="inline-flex items-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-muted)] px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[var(--text-secondary)]">
           控制台概览
         </span>
-        <h1 className="mt-4 text-3xl font-semibold text-[var(--text-primary)]">欢迎回来</h1>
-        <p className="mt-2 max-w-2xl text-sm text-[var(--text-secondary)]">
+        <h1 className="mt-4 text-2xl font-semibold text-[var(--text-primary)] sm:text-3xl">欢迎回来</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--text-secondary)]">
           这里汇总了当前站点的运营数据，你可以快速了解内容产出、用户增长与互动情况。
         </p>
       </header>
 
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
-          <div key={card.title} className="panel-muted p-6">
+          <div key={card.title} className="panel-muted p-5 sm:p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--text-secondary)]">
               {card.title}
             </p>
@@ -72,11 +72,11 @@ export default async function DashboardHomePage() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.5fr,1fr]">
-        <div className="space-y-4 rounded-2xl border border-[var(--surface-border)] p-6">
+        <div className="space-y-3 rounded-2xl border border-[var(--surface-border)] p-5 sm:space-y-4 sm:p-6">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">最近更新</h2>
           <ul className="space-y-3 text-sm text-[var(--text-secondary)]">
             {latestPosts.map((post) => (
-              <li key={post.id} className="flex items-center justify-between gap-4 rounded-xl bg-[var(--surface-muted)] p-4">
+              <li key={post.id} className="flex flex-col gap-3 rounded-xl bg-[var(--surface-muted)] p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium text-[var(--text-primary)]">{post.title}</p>
                   <p className="text-xs">
@@ -85,7 +85,7 @@ export default async function DashboardHomePage() {
                 </div>
                 <a
                   href={`/dashboard/posts/${post.id}`}
-                  className="rounded-full border border-[var(--surface-border)] px-3 py-1 text-xs text-[var(--text-secondary)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                  className="btn-outline flex justify-center px-3 py-2 text-xs font-medium"
                 >
                   编辑
                 </a>
@@ -95,7 +95,7 @@ export default async function DashboardHomePage() {
           </ul>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-[var(--surface-border)] p-6">
+        <div className="space-y-3 rounded-2xl border border-[var(--surface-border)] p-5 sm:space-y-4 sm:p-6">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">运营待办</h2>
           <ul className="space-y-3 text-sm text-[var(--text-secondary)]">
             {secondaryStats.map((stat) => (
@@ -108,7 +108,7 @@ export default async function DashboardHomePage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-[var(--surface-border)] p-6">
+      <section className="rounded-2xl border border-[var(--surface-border)] p-5 sm:p-6">
         <h2 className="text-lg font-semibold text-[var(--text-primary)]">最新留言</h2>
         <div className="mt-4 space-y-3 text-sm text-[var(--text-secondary)]">
           {latestMessages.map((message) => (

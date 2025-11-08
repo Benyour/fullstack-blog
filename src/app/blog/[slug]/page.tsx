@@ -122,12 +122,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const pagePath = `/blog/${post.slug}`;
 
   return (
-    <article className="py-16">
-      <Container className="max-w-3xl space-y-12 text-[var(--text-secondary)]">
+    <article className="py-12 md:py-16">
+      <Container className="max-w-3xl space-y-10 text-[var(--text-secondary)] md:space-y-12">
         <TrackPostView slug={pagePath} />
 
-        <header className="space-y-6">
-          <div className="flex flex-wrap items-center gap-3 text-sm text-[var(--text-secondary)] opacity-80">
+        <header className="space-y-4 sm:space-y-6">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--text-secondary)] opacity-80 sm:text-sm">
             <time dateTime={post.publishedAt?.toISOString()}>
               {post.publishedAt ? format(post.publishedAt, "yyyy年MM月dd日", { locale: zhCN }) : "草稿"}
             </time>
@@ -136,8 +136,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <span>·</span>
             <span>{readingMinutes} 分钟阅读</span>
           </div>
-          <h1 className="text-4xl font-semibold tracking-tight text-[var(--text-primary)]">{post.title}</h1>
-          <p className="text-base text-[var(--text-secondary)]">{post.summary}</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-4xl lg:text-[2.75rem]">
+            {post.title}
+          </h1>
+          <p className="text-sm leading-relaxed text-[var(--text-secondary)] sm:text-base">{post.summary}</p>
           <div className="flex flex-wrap gap-2 text-xs text-[var(--text-secondary)]">
             {post.tags.map(({ tag }) => (
               <span key={tag.id} className="chip">
@@ -145,7 +147,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </span>
             ))}
           </div>
-          <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--text-secondary)]">
+          <div className="flex flex-col gap-3 text-xs text-[var(--text-secondary)] sm:flex-row sm:items-center">
             <LikeButton postId={post.id} initialLikes={post._count.reactions} />
             <ShareButtons title={post.title} url={`${process.env.SITE_URL ?? "http://localhost:3000"}${pagePath}`} />
           </div>
@@ -155,7 +157,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {content}
         </div>
 
-        <aside className="space-y-4 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-muted)] p-6">
+        <aside className="space-y-3 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-muted)] p-5 sm:space-y-4 sm:p-6">
           <h2 className="text-lg font-semibold text-[var(--text-primary)]">订阅更新</h2>
           <p className="text-sm text-[var(--text-secondary)]">
             如果你也关注 Next.js、前端工程化与产品体验，订阅后即可第一时间收到新文章。
@@ -164,9 +166,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </aside>
 
         {relatedPosts.length > 0 && (
-          <section className="space-y-4">
+          <section className="space-y-3 sm:space-y-4">
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">延伸阅读</h2>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
               {relatedPosts.map((item) => (
                 <PostCard
                   key={item.id}

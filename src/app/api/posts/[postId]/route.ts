@@ -127,6 +127,7 @@ export async function PUT(
         title: existing.title,
         summary: existing.summary,
         content: existing.content,
+        coverImage: existing.coverImage,
       },
     });
   }

@@ -32,7 +32,7 @@ export function PostCard({ post, className }: { post: PostSummary; className?: s
   return (
     <article
       className={cn(
-        "panel group flex h-full flex-col gap-4 p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-strong)]",
+        "panel group flex h-full flex-col gap-3 p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-strong)] sm:gap-4 sm:p-6",
         className,
       )}
     >
@@ -50,7 +50,7 @@ export function PostCard({ post, className }: { post: PostSummary; className?: s
         </div>
       </div>
       <Link href={`/blog/${post.slug}`} className="block">
-        <h3 className="break-words text-xl font-semibold leading-snug tracking-tight text-[var(--text-primary)] transition group-hover:text-[var(--accent)]">
+        <h3 className="break-words text-lg font-semibold leading-snug tracking-tight text-[var(--text-primary)] transition group-hover:text-[var(--accent)] sm:text-xl">
           {post.title}
         </h3>
       </Link>

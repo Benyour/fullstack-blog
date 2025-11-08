@@ -60,18 +60,18 @@ export default async function DashboardAnalyticsPage() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
       <header className="space-y-2">
         <span className="inline-flex items-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-muted)] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-[var(--text-secondary)]">
           数据洞察
         </span>
         <h1 className="text-2xl font-semibold text-[var(--text-primary)]">站点表现总览</h1>
-        <p className="text-sm text-[var(--text-secondary)]">
+        <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
           关注内容表现、用户增长与互动情况，辅助制订内容策略。
         </p>
       </header>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard title="总浏览量" value={viewsAggregate._sum.views ?? 0} />
         <StatCard title="订阅用户" value={subscribers} helper={`近 30 天 +${newSubscribers}`} />
         <StatCard title="待回复留言" value={pendingMessages} tone="warning" />
@@ -79,7 +79,7 @@ export default async function DashboardAnalyticsPage() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-[1.5fr,1fr]">
-        <div className="space-y-4 rounded-2xl border border-[var(--surface-border)] p-6">
+        <div className="space-y-3 rounded-2xl border border-[var(--surface-border)] p-5 sm:space-y-4 sm:p-6">
           <h2 className="text-base font-semibold text-[var(--text-primary)]">近 7 日访客趋势</h2>
           <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
             {dailyViews.map((item) => (
@@ -91,7 +91,7 @@ export default async function DashboardAnalyticsPage() {
           </ul>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-[var(--surface-border)] p-6">
+        <div className="space-y-3 rounded-2xl border border-[var(--surface-border)] p-5 sm:space-y-4 sm:p-6">
           <h2 className="text-base font-semibold text-[var(--text-primary)]">热门访问页面</h2>
           <ul className="space-y-3 text-sm text-[var(--text-secondary)]">
             {pageGroup.map((entry) => (
@@ -104,7 +104,7 @@ export default async function DashboardAnalyticsPage() {
         </div>
       </section>
 
-      <section className="space-y-4 rounded-2xl border border-[var(--surface-border)] p-6">
+      <section className="space-y-3 rounded-2xl border border-[var(--surface-border)] p-5 sm:space-y-4 sm:p-6">
         <h2 className="text-base font-semibold text-[var(--text-primary)]">近期发布表现</h2>
         <div className="grid gap-3 text-sm text-[var(--text-secondary)]">
           {posts.map((post) => {
@@ -119,7 +119,7 @@ export default async function DashboardAnalyticsPage() {
                   <p className="font-semibold text-[var(--text-primary)]">{post.title}</p>
                   <p className="text-xs">{post.summary}</p>
                 </div>
-                <div className="flex items-center justify-end gap-3 text-xs">
+                <div className="flex flex-wrap items-center justify-end gap-3 text-xs">
                   <MetricBadge label="阅读" value={views} />
                   <MetricBadge label="评论" value={post._count.comments} />
                   <MetricBadge label="点赞" value={post._count.reactions} />
@@ -142,7 +142,7 @@ function StatCard({ title, value, helper, tone }: { title: string; value: number
       : "from-emerald-400/20 via-teal-400/20 to-cyan-400/20";
 
   return (
-    <div className={`rounded-2xl border border-[var(--surface-border)] bg-gradient-to-br ${toneClass} p-6`}>
+    <div className={`rounded-2xl border border-[var(--surface-border)] bg-gradient-to-br ${toneClass} p-5 sm:p-6`}>
       <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--text-secondary)]">{title}</p>
       <p className="mt-4 text-3xl font-semibold text-[var(--text-primary)]">{value}</p>
       {helper && <p className="mt-2 text-xs text-[var(--text-secondary)]">{helper}</p>}

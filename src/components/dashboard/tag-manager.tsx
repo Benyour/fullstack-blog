@@ -121,13 +121,11 @@ export function TagManager({ initialTags }: TagManagerProps) {
   }
 
   return (
-    <div className="space-y-6 text-sm">
+    <div className="space-y-5 text-sm sm:space-y-6">
       <section className="space-y-4">
         <h2 className="text-base font-semibold text-[var(--text-primary)]">已有标签</h2>
         <div className="divide-y divide-[var(--surface-border)] rounded-2xl border border-[var(--surface-border)]">
-          {tags.length === 0 && (
-            <p className="p-6 text-sm text-[var(--text-secondary)]">暂无标签，先在下方创建一个吧。</p>
-          )}
+          {tags.length === 0 && <p className="p-6 text-center text-sm text-[var(--text-secondary)]">暂无标签，先在下方创建一个吧。</p>}
           {tags.map((tag) => (
             <TagRow key={tag.id} tag={tag} onUpdate={handleUpdate} onDelete={handleDelete} disabled={formState === "submitting"} />
           ))}
@@ -172,7 +170,7 @@ export function TagManager({ initialTags }: TagManagerProps) {
           <div className="flex items-end">
             <button
               type="submit"
-              className="w-full rounded-full bg-[var(--text-primary)] px-4 py-2 font-medium text-white transition hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-60"
+              className="btn-accent flex w-full justify-center px-4 py-2 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60"
               disabled={formState === "submitting"}
             >
               {formState === "submitting" ? "创建中..." : "创建标签"}
@@ -215,7 +213,7 @@ function TagRow({
   };
 
   return (
-    <div className="grid gap-2 p-4 md:grid-cols-[minmax(0,2fr),minmax(0,1fr),auto] md:items-center">
+    <div className="grid gap-3 p-4 md:grid-cols-[minmax(0,2fr),minmax(0,1fr),auto] md:items-center">
       <div className="grid gap-1">
         <label className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-secondary)]">名称</label>
         <input
@@ -240,8 +238,8 @@ function TagRow({
           disabled={disabled}
         />
       </div>
-      <div className="flex items-center justify-end gap-2 text-xs">
-        <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-[var(--text-secondary)]">
+      <div className="flex flex-wrap items-center gap-2 md:justify-end">
+        <span className="rounded-full bg-[var(--surface-muted)] px-3 py-1 text-xs text-[var(--text-secondary)]">
           {tag.postCount} 篇文章
         </span>
         {editing ? (
@@ -249,7 +247,7 @@ function TagRow({
             type="button"
             onClick={handleSave}
             disabled={disabled}
-            className="rounded-full bg-emerald-500 px-4 py-1 font-medium text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full bg-emerald-500 px-4 py-1 text-xs font-medium text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
             保存
           </button>
@@ -258,7 +256,7 @@ function TagRow({
             type="button"
             onClick={() => onDelete(tag.id)}
             disabled={disabled || tag.postCount > 0}
-            className="rounded-full bg-red-500 px-4 py-1 font-medium text-white transition hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full bg-red-500 px-4 py-1 text-xs font-medium text-white transition hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60"
             title={tag.postCount > 0 ? "存在关联文章，删除前请先移除文章中的标签" : "删除标签"}
           >
             删除
