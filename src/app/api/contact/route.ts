@@ -45,15 +45,23 @@ export async function POST(request: Request) {
 
   if (resend && process.env.CONTACT_FORWARD_TO) {
     const to = process.env.CONTACT_FORWARD_TO.split(",").map((entry) => entry.trim());
+    const formattedMessage = message.replace(/\n/g, "<br />");
+    const html = [
+      '<div style="font-family: sans-serif;">',
+      `<p><strong>姓名：</strong> ${name}</p>`,
+      `<p><strong>邮箱：</strong> ${email}</p>`,
+      "<p><strong>留言：</strong></p>",
+      `<p>${formattedMessage}</p>`,
+      "</div>",
+    ].join("");
+
     await resend.emails.send({
       from: process.env.EMAIL_FROM ?? "no-reply@your-domain.com",
       to,
       subject: `新的站内联系：${name}`,
-      html: `
-        <div style="font-family: sans-serif;">
-          <p><strong>姓名：</strong> ${name}</p>
-          <p><strong>邮箱：</strong> ${email}</p>
-          <p><strong>留言：</strong></p>
-          <p>${message.replace(/\n/g, "<br />")}</p>
-        </div>
-      `,
+      html,
+    });
+  }
+
+  return NextResponse.json({ id: record.id }, { status: 201 });
+}
